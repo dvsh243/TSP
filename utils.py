@@ -27,6 +27,20 @@ def generateCities(N):
     return cities
 
 
+def getPathCoords(path, cities):
+    """
+    path: list -> [1, 0, 3, 2, 4]
+    """
+    x_list, y_list = [], []
+
+    for i in path:
+        x_list.append( cities[i].x )
+        y_list.append( cities[i].y )
+    
+    return x_list, y_list
+
+
+
 def visualizeCities(cities):
     fig = plt.figure()
     fig.suptitle('cities')
@@ -54,7 +68,7 @@ def visualizePath(title, cities, xpath, ypath):
     plt.scatter(x = x_list, y = y_list)
     plt.plot(xpath, ypath)
 
-    plt.show()
+    plt.show(block = False)
 
 
 
