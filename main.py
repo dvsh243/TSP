@@ -18,6 +18,7 @@ cities = generateCities(N)
 # print(f"time taken for {N} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
 # xpath, ypath = getPathCoords(bestPath, cities)
 # visualizePath(f"Brute Force (WORST) - {str(minTour)[:8]} km", cities, xpath, ypath)
+# print(f"Path chosen -> {bestPath}")
 
 
 # print("\n")
@@ -29,6 +30,7 @@ minTour, bestPath = bruteForce(cities)
 print(f"time taken for {N} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
 xpath, ypath = getPathCoords(bestPath, cities)
 visualizePath(f"Brute Force - {str(minTour)[:8]} km", cities, xpath, ypath)
+print(f"Path chosen -> {bestPath}")
 
 
 print("\n")
@@ -41,6 +43,7 @@ tourLength = getPathLength(bestPath, cities)
 print(f"time taken for {N} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
 xpath, ypath = getPathCoords(bestPath, cities)
 visualizePath(f"Nearest Neighbour - {str(tourLength)[:8]} km", cities, xpath, ypath)
+print(f"Path chosen -> {bestPath}")
 
 
 print("\n")

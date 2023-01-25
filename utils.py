@@ -73,6 +73,10 @@ def visualizePath(title, cities, xpath, ypath):
         y_list.append(city.y)
 
     plt.scatter(x = x_list, y = y_list)
+
+    for i in range(len(cities)):
+        plt.annotate(i, (x_list[i], y_list[i]))
+
     plt.plot(xpath, ypath)
 
     plt.show(block = False)
