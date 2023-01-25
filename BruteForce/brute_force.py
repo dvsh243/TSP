@@ -1,6 +1,3 @@
-from utils import generateCities, visualizePath, getPathCoords
-import matplotlib.pyplot as plt
-import time
 
 
 def bruteForce(cities):
@@ -31,7 +28,7 @@ def bruteForce(cities):
         
         if progress % 10000 == 0: print(f"{str(progress / len(permutations) * 100)[:5]}% permutations computed.", end='\r')
     
-    return minTour, bestPath
+    return minTour, bestPath + [bestPath[0]]  # connecting last city to the first city
 
 
 def permute(nums):

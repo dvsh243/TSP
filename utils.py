@@ -40,6 +40,13 @@ def getPathCoords(path, cities):
     return x_list, y_list
 
 
+def getPathLength(path, cities):
+    pathLength = 0
+    for i in range(len(path) - 1):
+        city1, city2 = cities[ path[i] ], cities[ path[i+1] ]
+        pathLength += city1.distance(city2)
+    return pathLength
+
 
 def visualizeCities(cities):
     fig = plt.figure()
