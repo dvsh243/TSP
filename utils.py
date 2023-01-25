@@ -12,7 +12,7 @@ class City:
         """Get distance (hypotenuse) between city1 and city2"""
         dx = self.x - city.x
         dy = self.y - city.y
-        return math.sqrt(dx ** 2, dy ** 2)
+        return math.sqrt(dx ** 2 + dy ** 2)
 
 
 def generateCities(N):
@@ -37,8 +37,24 @@ def visualizeCities(cities):
         y_list.append(city.y)
 
     plt.scatter(x = x_list, y = y_list)
+
     plt.show()
 
+
+def visualizePath(title, cities, xpath, ypath):
+
+    fig = plt.figure()
+    fig.suptitle(title)
+
+    x_list, y_list = [], []
+    for city in cities:
+        x_list.append(city.x)
+        y_list.append(city.y)
+
+    plt.scatter(x = x_list, y = y_list)
+    plt.plot(xpath, ypath)
+
+    plt.show()
 
 
 
