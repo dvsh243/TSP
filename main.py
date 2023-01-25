@@ -6,43 +6,73 @@ from BruteForce.brute_force_worst import bruteForceWorst
 from NearestNeighbour.nearest_neighbour import nearestNeighbour
 from Random.random_route import getRandomPath
 from Swapping.two_opt import twoOptSwap
+from Swapping.three_opt import threeOptSwap
 
 
-visualize = True
+visualize = False
 
 print("\n")
 
-N = 8
-# (for 2 opt swap) 2 > N < 9 (for brute force)
+N = 40
+# (for 3 opt swap) 3 > N < 9 (for brute force)
 cities = generateCities(N)
 
 
-print(f" ---- RANDOM PATH ---- ")
+# print(f" ---- RANDOM PATH ---- ")
+# start_time = time.perf_counter()
+# randomPath = getRandomPath(cities)
+# tourLength = getPathLength(randomPath, cities)
+# xpath, ypath = getPathCoords(randomPath, cities)
+# print(f"time taken for {N} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
+# if visualize: visualizePath(f"Random Path - {str(tourLength)[:8]} km", cities, xpath, ypath)
+# print(f"Path chosen -> {randomPath}")
+# print(f"Tour Length -> {tourLength}")
+
+
+# print()
+
+
+
+print(f" ---- NEAREST NEIGHBOUR ---- ")
 start_time = time.perf_counter()
-randomPath = getRandomPath(cities)
-tourLength = getPathLength(randomPath, cities)
-xpath, ypath = getPathCoords(randomPath, cities)
-print(f"time taken for {N} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
-if visualize: visualizePath(f"Random Path - {str(tourLength)[:8]} km", cities, xpath, ypath)
-print(f"Path chosen -> {randomPath}")
+NNPath = nearestNeighbour(cities)
+tourLength = getPathLength(NNPath, cities)
+# print(f"time taken for {N} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
+xpath, ypath = getPathCoords(NNPath, cities)
+if visualize: visualizePath(f"Nearest Neighbour - {str(tourLength)[:8]} km", cities, xpath, ypath)
+# print(f"Path chosen -> {NNPath}")
 print(f"Tour Length -> {tourLength}")
 
 
 print()
 
 
+
 print(f" ---- 2 OPT SWAP ---- ")
 start_time = time.perf_counter()
-minTour, bestPath = twoOptSwap(randomPath, cities, N=50)
-print(f"time taken for {N} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
+minTour, bestPath = twoOptSwap(NNPath, cities, N=1000)
+# print(f"time taken for {N} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
 xpath, ypath = getPathCoords(bestPath, cities)
-if visualize: visualizePath(f"Two Opt Swap - {str(minTour)[:8]} km", cities, xpath, ypath)
-print(f"Path chosen -> {bestPath}")
+if visualize: visualizePath(f"2 Opt Swap - {str(minTour)[:8]} km", cities, xpath, ypath)
+# print(f"Path chosen -> {bestPath}")
 print(f"Tour Length -> {minTour}")
 
 
 print()
     
+
+print(f" ---- 3 OPT SWAP ---- ")
+start_time = time.perf_counter()
+minTour, bestPath = threeOptSwap(NNPath, cities, N=1000)
+# print(f"time taken for {N} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
+xpath, ypath = getPathCoords(bestPath, cities)
+if visualize: visualizePath(f"3 Opt Swap - {str(minTour)[:8]} km", cities, xpath, ypath)
+# print(f"Path chosen -> {bestPath}")
+print(f"Tour Length -> {minTour}")
+
+
+
+print()    
 
 # print(f" ---- BRUTE FORCE (WORST) ---- ")
 # start_time = time.perf_counter()
@@ -70,18 +100,6 @@ print()
 # print()
 
 
-# print(f" ---- NEAREST NEIGHBOUR ---- ")
-# start_time = time.perf_counter()
-# bestPath = nearestNeighbour(cities)
-# tourLength = getPathLength(bestPath, cities)
-# print(f"time taken for {N} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
-# xpath, ypath = getPathCoords(bestPath, cities)
-# if visualize: visualizePath(f"Nearest Neighbour - {str(tourLength)[:8]} km", cities, xpath, ypath)
-# print(f"Path chosen -> {bestPath}")
-# print(f"Tour Length -> {tourLength}")
-
-
-# print()
 
 
 if visualize: input("Press any key to close : ")
