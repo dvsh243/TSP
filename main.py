@@ -9,9 +9,9 @@ from Swapping.two_opt import twoOptSwap
 from Swapping.three_opt import threeOptSwap
 
 
-visualize = False
-SWAP_COUNT = 10000
-CITY_COUNT = 40
+visualize = True
+SWAP_COUNT = 20000
+CITY_COUNT = 20
 # (for 3 opt swap) 3 > N < 9 (for brute force)
 
 RANDOM_PATH = True
@@ -58,11 +58,11 @@ if NEAREST_NEIGHBOUR:
 if TWO_OPT:
     print(f" ---- 2 OPT SWAP ---- ")
     start_time = time.perf_counter()
-    minTour, bestPath = twoOptSwap(randomPath, cities, N=SWAP_COUNT)
+    minTour, twoOptPath = twoOptSwap(randomPath, cities, N=SWAP_COUNT)
     # print(f"time taken for {CITY_COUNT} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
-    xpath, ypath = getPathCoords(bestPath, cities)
+    xpath, ypath = getPathCoords(twoOptPath, cities)
     if visualize: visualizePath(f"2 Opt Swap - {str(minTour)[:8]} km", cities, xpath, ypath)
-    # print(f"Path chosen -> {bestPath}")
+    # print(f"Path chosen -> {twoOptPath}")
     print(f"Tour Length -> {minTour}")
 
 
@@ -72,11 +72,11 @@ if TWO_OPT:
 if THREE_OPT:
     print(f" ---- 3 OPT SWAP ---- ")
     start_time = time.perf_counter()
-    minTour, bestPath = threeOptSwap(randomPath, cities, N=SWAP_COUNT)
+    minTour, threeOptPath = threeOptSwap(twoOptPath, cities, N=SWAP_COUNT)
     # print(f"time taken for {CITY_COUNT} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
-    xpath, ypath = getPathCoords(bestPath, cities)
+    xpath, ypath = getPathCoords(threeOptPath, cities)
     if visualize: visualizePath(f"3 Opt Swap - {str(minTour)[:8]} km", cities, xpath, ypath)
-    # print(f"Path chosen -> {bestPath}")
+    # print(f"Path chosen -> {threeOptPath}")
     print(f"Tour Length -> {minTour}")
 
 
