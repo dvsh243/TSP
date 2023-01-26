@@ -38,7 +38,8 @@ class SimAnneal:
                 plt.pause(0.01)
                 plt.clf()
                 print(f"acceptance probability -> {str((self.temperature / self.max_temperature) * 100)[:8]}%\t temp - {self.temperature}", end='\r')
-
+            else: 
+                print(f"{i} acceptance probability -> {str((self.temperature / self.max_temperature) * 100)[:8]}%\t temp - {self.temperature}", end='\r')
 
             i += 1
             self.temperature = self.temperature * self.decay
