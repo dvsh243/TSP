@@ -15,8 +15,8 @@ class TSP:
 
     def __init__(self):
 
-        self.VISUALIZE = False
-        self.CITY_COUNT = 14  # (for 3 opt swap) 3 > N < 9 (for brute force)
+        self.VISUALIZE = True
+        self.CITY_COUNT = 20  # (for 3 opt swap) 3 > N < 9 (for brute force)
 
         # - # - # - # - # - # - # - # - # - # - 
         self.BRUTE_FORCE = True
@@ -24,7 +24,7 @@ class TSP:
         self.NEAREST_NEIGHBOUR = True
         self.SIMULATED_ANNEALING = True
         
-        self.SWAP_COUNT = 200
+        self.SWAP_COUNT = 10000
         self.TWO_OPT = True
         self.THREE_OPT = True
         # - # - # - # - # - # - # - # - # - # - 
@@ -34,9 +34,9 @@ class TSP:
         # randomPath = self.randomPathTSP()
         NNPath = self.nearestNeighbourTSP()
         # brutePath = self.bruteForceTSP()
-        twoOptPath = self.twoOptTSP(NNPath)
-        # threeOptPath = self.threeOptTSP(randomPath)
-        simAnnealPath = self.SimulatedAnnealingTSP(NNPath)
+        twoOptPath = self.twoOptTSP(NNPath, visual=False)
+        # threeOptPath = self.threeOptTSP(twoOptPath, visual=False)
+        simAnnealPath = self.SimulatedAnnealingTSP(NNPath, visual=False)
 
         if self.VISUALIZE: input("Enter any key to exit: ")
 
@@ -65,22 +65,22 @@ class TSP:
         return NNPath
     
 
-    def twoOptTSP(self, OptPath: list):
+    def twoOptTSP(self, OptPath: list, visual: bool = False):
         if not self.TWO_OPT: return None
     
         print(f"\n ---- 2 OPT SWAP ---- ")
-        minTour, twoOptPath = twoOptSwap(OptPath, self.cities, N=self.SWAP_COUNT)
+        minTour, twoOptPath = twoOptSwap(OptPath, self.cities, N=self.SWAP_COUNT, visual=visual)
         xpath, ypath = getPathCoords(twoOptPath, self.cities)
         if self.VISUALIZE: visualizePath(f"2 Opt Swap - {str(minTour)[:8]} km", self.cities, xpath, ypath)
         print(f"Path followed -> {twoOptPath}\nTour Length -> {minTour}")
         return twoOptPath
 
     
-    def threeOptTSP(self, OptPath: list):
+    def threeOptTSP(self, OptPath: list, visual: bool = False):
         if not self.TWO_OPT: return None
         
         print(f"\n ---- 3 OPT SWAP ---- ")
-        minTour, threeOptPath = threeOptSwap(OptPath, self.cities, N=self.SWAP_COUNT)
+        minTour, threeOptPath = threeOptSwap(OptPath, self.cities, N=self.SWAP_COUNT, visual=visual)
         xpath, ypath = getPathCoords(threeOptPath, self.cities)
         if self.VISUALIZE: visualizePath(f"3 Opt Swap - {str(minTour)[:8]} km", self.cities, xpath, ypath)
         print(f"Path followed -> {threeOptPath}\nTour Length -> {minTour}")
@@ -98,11 +98,11 @@ class TSP:
         return brutePath
 
 
-    def SimulatedAnnealingTSP(self, optPath):
+    def SimulatedAnnealingTSP(self, optPath, visual = False):
         if not self.SIMULATED_ANNEALING: return None
 
         print("\n ---- SIMULATED ANNEALING ---- ")
-        annealObj = SimAnneal(self.cities, optPath, decay=0.99)
+        annealObj = SimAnneal(self.cities, optPath, decay=0.9997, visual=visual)
         minPath = getPathLength(annealObj.path, self.cities)
         xpath, ypath = getPathCoords(annealObj.path, self.cities)
         if self.VISUALIZE: visualizePath(f"Simulated Annealing - {str(minPath)[:8]} km", self.cities, xpath, ypath)

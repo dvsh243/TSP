@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from utils import getPathLength, getPathCoords
 
 
-def twoOptSwap(path, cities, N=100, visual = True):
+def twoOptSwap(path, cities, N=100, visual = False):
     """
     we can't modify 1st and last cities of path
     (path will start at city 0 and end at city 0)
@@ -19,14 +19,6 @@ def twoOptSwap(path, cities, N=100, visual = True):
 
 
     for i in range(N):
-        if visual:
-            plt.scatter(xpath, ypath)
-            plt.suptitle(f" 2 Opt ({i}) - {minTour} km")
-            for i in range(len(cities)): plt.annotate(i, (xpath[i], ypath[i]))
-            xpath, ypath = getPathCoords(path, cities)
-            plt.plot(xpath, ypath)
-            plt.pause(0.01)
-            plt.clf()
 
         print(f"{str((i / N) * 100)[:10]}% swaps done.", end='\r')
 
@@ -37,6 +29,14 @@ def twoOptSwap(path, cities, N=100, visual = True):
             minTour = getPathLength(newPath, cities)
             path = newPath
             swapCount += 1
+
+            if visual:
+                plt.scatter(xpath, ypath)
+                plt.suptitle(f" 2 Opt ({i}) - {minTour} km")
+                xpath, ypath = getPathCoords(path, cities)
+                plt.plot(xpath, ypath)
+                plt.pause(0.01)
+                plt.clf()
 
     print(f"Swapped {swapCount} / {N} times to find optimal solution.")
     return minTour, path

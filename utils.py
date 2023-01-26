@@ -74,8 +74,8 @@ def visualizePath(title, cities, xpath, ypath):
 
     plt.scatter(x = x_list, y = y_list)
 
-    for i in range(len(cities)):
-        plt.annotate(i, (x_list[i], y_list[i]))
+    # for i in range(len(cities)):
+        # plt.annotate(i, (x_list[i], y_list[i]))
 
     plt.plot(xpath, ypath)
 

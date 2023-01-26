@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 class SimAnneal:
     
-    def __init__(self, cities, optPath, decay = 0.995):
+    def __init__(self, cities, optPath, decay = 0.995, visual = False):
         self.cities = cities
 
         self.temperature = 1000
@@ -14,30 +14,15 @@ class SimAnneal:
 
         self.path = optPath
 
-        self.anneal(visual = True)
+        self.anneal(visual = visual)
     
 
 
     def anneal(self, visual = False):
         good, bad = 0, 0
 
-        # - # - 
-        if visual:
-            xpath, ypath = getPathCoords(self.path, self.cities)
-        # - # - 
-
         i = 0
         while self.temperature > self.stopping_temperature:
-
-            # if visual and i % 50 == 0:
-            if visual:
-                plt.scatter(xpath, ypath)
-                plt.suptitle(f" SimAnneal - {getPathLength(self.path, self.cities)} km")
-                for j in range(len(self.cities)): plt.annotate(j, (xpath[j], ypath[j]))
-                xpath, ypath = getPathCoords(self.path, self.cities)
-                plt.plot(xpath, ypath)
-                plt.pause(0.01)
-                plt.clf()
             
             print(f"{i} acceptance probability -> {str((self.temperature / self.max_temperature) * 100)[:8]}%\t temp - {self.temperature}", end='\r')
 
@@ -47,11 +32,13 @@ class SimAnneal:
             newPath = self.twoCitiesSwap()
             
             if self.isPathBetter(newPath, self.path):
+                if visual: self.showVisual()
                 good += 1
                 # if this newPath is better than the previous path we had we accept
                 self.path = newPath
 
             elif self.acceptProbability():
+                if visual: self.showVisual()
                 bad += 1
                 # this newPath is worse than the previous path
                 # should we accept this worse path? based on the temperature
@@ -68,7 +55,7 @@ class SimAnneal:
 
 
     def acceptProbability(self):
-        if random.randint(1, self.max_temperature) < self.temperature:
+        if random.randint(self.stopping_temperature, self.max_temperature) < self.temperature:
             return True
         return False
 
@@ -101,3 +88,12 @@ class SimAnneal:
         # v -> u, u -> w, w -> v
 
         return newPath
+
+    
+    def showVisual(self):
+        xpath, ypath = getPathCoords(self.path, self.cities)
+        plt.scatter(xpath, ypath)
+        plt.suptitle(f" SimAnneal - {getPathLength(self.path, self.cities)} km")
+        plt.plot(xpath, ypath)
+        plt.pause(0.01)
+        plt.clf()
