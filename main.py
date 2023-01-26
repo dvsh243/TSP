@@ -15,7 +15,7 @@ class TSP:
 
     def __init__(self):
 
-        self.VISUALIZE = True
+        self.VISUALIZE = False
         self.CITY_COUNT = 20  # (for 3 opt swap) 3 > N < 9 (for brute force)
 
         # - # - # - # - # - # - # - # - # - # - 
@@ -24,7 +24,7 @@ class TSP:
         self.NEAREST_NEIGHBOUR = True
         self.SIMULATED_ANNEALING = True
         
-        self.SWAP_COUNT = 10000
+        self.SWAP_COUNT = 100000
         self.TWO_OPT = True
         self.THREE_OPT = True
         # - # - # - # - # - # - # - # - # - # - 
@@ -102,7 +102,7 @@ class TSP:
         if not self.SIMULATED_ANNEALING: return None
 
         print("\n ---- SIMULATED ANNEALING ---- ")
-        annealObj = SimAnneal(self.cities, optPath, decay=0.9997, visual=visual)
+        annealObj = SimAnneal(self.cities, optPath, decay=0.99995, visual=visual)
         minPath = getPathLength(annealObj.path, self.cities)
         xpath, ypath = getPathCoords(annealObj.path, self.cities)
         if self.VISUALIZE: visualizePath(f"Simulated Annealing - {str(minPath)[:8]} km", self.cities, xpath, ypath)

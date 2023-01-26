@@ -7,8 +7,8 @@ class SimAnneal:
     def __init__(self, cities, optPath, decay = 0.995, visual = False):
         self.cities = cities
 
-        self.temperature = 1000
-        self.max_temperature = 1000
+        self.temperature = 100
+        self.max_temperature = 100
         self.stopping_temperature = 1
         self.decay = decay
 
@@ -21,10 +21,12 @@ class SimAnneal:
     def anneal(self, visual = False):
         good, bad = 0, 0
 
+        minTour = float('inf')
         i = 0
         while self.temperature > self.stopping_temperature:
             
-            print(f"{i} acceptance probability -> {str((self.temperature / self.max_temperature) * 100)[:8]}%\t temp - {self.temperature}", end='\r')
+            # print(f"{i} acceptance probability -> {str((self.temperature / self.max_temperature) * 100)[:8]}%\t temp - {self.temperature}", end='\r')
+            if i%100 == 0: print(f"good = {good}\tbad = {bad}\tminTour = {minTour}\ttemp = {self.temperature}", end='\r')
 
             i += 1
             self.temperature = self.temperature * self.decay
@@ -36,6 +38,8 @@ class SimAnneal:
                 good += 1
                 # if this newPath is better than the previous path we had we accept
                 self.path = newPath
+                minTour = min( getPathLength(self.path, self.cities), minTour )
+
 
             elif self.acceptProbability():
                 if visual: self.showVisual()
@@ -45,6 +49,7 @@ class SimAnneal:
                 self.path = newPath
         
         print(f"annealing loop ran total {i} times.")
+        print("minTour -- > ", minTour)
 
 
     def isPathBetter(self, path1, path2):
