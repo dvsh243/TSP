@@ -9,110 +9,91 @@ from Swapping.two_opt import twoOptSwap
 from Swapping.three_opt import threeOptSwap
 
 
-visualize = True
-SWAP_COUNT = 20000
-CITY_COUNT = 20
-# (for 3 opt swap) 3 > N < 9 (for brute force)
 
-RANDOM_PATH = True
-NEAREST_NEIGHBOUR = False
-TWO_OPT = True
-THREE_OPT = True
-BRUTE_FORCE = False
+class TSP:
 
-print("\n")
+    def __init__(self):
 
-cities = generateCities(CITY_COUNT)
+        self.VISUALIZE = True
+        self.CITY_COUNT = 9  # (for 3 opt swap) 3 > N < 9 (for brute force)
 
+        # - # - # - # - # - # - # - # - # - # - 
+        self.BRUTE_FORCE = True
+        self.RANDOM_PATH = True
+        self.NEAREST_NEIGHBOUR = True
+        
+        self.TWO_OPT = True
+        self.SWAP_COUNT = 20000
+        self.THREE_OPT = True
+        # - # - # - # - # - # - # - # - # - # - 
 
-if RANDOM_PATH:
-    print(f" ---- RANDOM PATH ---- ")
-    start_time = time.perf_counter()
-    randomPath = getRandomPath(cities)
-    tourLength = getPathLength(randomPath, cities)
-    xpath, ypath = getPathCoords(randomPath, cities)
-    # print(f"time taken for {CITY_COUNT} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
-    if visualize: visualizePath(f"Random Path - {str(tourLength)[:8]} km", cities, xpath, ypath)
-    # print(f"Path chosen -> {randomPath}")
-    print(f"Tour Length -> {tourLength}")
+        self.cities = generateCities(self.CITY_COUNT)
 
+        randomPath = self.randomPathTSP()
+        NNPath = self.nearestNeighbourTSP()
+        brutePath = self.bruteForceTSP()
+        twoOptPath = self.twoOptTSP(NNPath)
+        threeOptSwap = self.threeOptTSP(NNPath)
 
-    print()
+        if self.VISUALIZE: input("Enter any key to exit: ")
 
 
-if NEAREST_NEIGHBOUR:
-    print(f" ---- NEAREST NEIGHBOUR ---- ")
-    start_time = time.perf_counter()
-    NNPath = nearestNeighbour(cities)
-    tourLength = getPathLength(NNPath, cities)
-    # print(f"time taken for {CITY_COUNT} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
-    xpath, ypath = getPathCoords(NNPath, cities)
-    if visualize: visualizePath(f"Nearest Neighbour - {str(tourLength)[:8]} km", cities, xpath, ypath)
-    # print(f"Path chosen -> {NNPath}")
-    print(f"Tour Length -> {tourLength}")
+    def randomPathTSP(self):
+        if not self.RANDOM_PATH: return None
 
-
-    print()
-
-
-if TWO_OPT:
-    print(f" ---- 2 OPT SWAP ---- ")
-    start_time = time.perf_counter()
-    minTour, twoOptPath = twoOptSwap(randomPath, cities, N=SWAP_COUNT)
-    # print(f"time taken for {CITY_COUNT} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
-    xpath, ypath = getPathCoords(twoOptPath, cities)
-    if visualize: visualizePath(f"2 Opt Swap - {str(minTour)[:8]} km", cities, xpath, ypath)
-    # print(f"Path chosen -> {twoOptPath}")
-    print(f"Tour Length -> {minTour}")
-
-
-    print()
+        print(f"\n ---- RANDOM PATH ---- ")
+        randomPath = getRandomPath(self.cities)
+        tourLength = getPathLength(randomPath, self.cities)
+        xpath, ypath = getPathCoords(randomPath, self.cities)
+        if self.VISUALIZE: visualizePath(f"Random Path - {str(tourLength)[:8]} km", self.cities, xpath, ypath)
+        print(f"Path followed -> {randomPath}\nTour Length -> {tourLength}")
+        return randomPath
     
 
-if THREE_OPT:
-    print(f" ---- 3 OPT SWAP ---- ")
-    start_time = time.perf_counter()
-    minTour, threeOptPath = threeOptSwap(twoOptPath, cities, N=SWAP_COUNT)
-    # print(f"time taken for {CITY_COUNT} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
-    xpath, ypath = getPathCoords(threeOptPath, cities)
-    if visualize: visualizePath(f"3 Opt Swap - {str(minTour)[:8]} km", cities, xpath, ypath)
-    # print(f"Path chosen -> {threeOptPath}")
-    print(f"Tour Length -> {minTour}")
+    def nearestNeighbourTSP(self):
+        if not self.NEAREST_NEIGHBOUR: return None
+    
+        print(f"\n ---- NEAREST NEIGHBOUR ---- ")
+        NNPath = nearestNeighbour(self.cities)
+        tourLength = getPathLength(NNPath, self.cities)
+        xpath, ypath = getPathCoords(NNPath, self.cities)
+        if self.VISUALIZE: visualizePath(f"Nearest Neighbour - {str(tourLength)[:8]} km", self.cities, xpath, ypath)
+        print(f"Path followed -> {NNPath}\nTour Length -> {tourLength}")
+        return NNPath
+    
+
+    def twoOptTSP(self, OptPath: list):
+        if not self.TWO_OPT: return None
+    
+        print(f"\n ---- 2 OPT SWAP ---- ")
+        minTour, twoOptPath = twoOptSwap(OptPath, self.cities, N=self.SWAP_COUNT)
+        xpath, ypath = getPathCoords(twoOptPath, self.cities)
+        if self.VISUALIZE: visualizePath(f"2 Opt Swap - {str(minTour)[:8]} km", self.cities, xpath, ypath)
+        print(f"Path followed -> {twoOptPath}\nTour Length -> {minTour}")
+        return twoOptPath
+
+    
+    def threeOptTSP(self, OptPath: list):
+        if not self.TWO_OPT: return None
+        
+        print(f"\n ---- 3 OPT SWAP ---- ")
+        minTour, threeOptPath = threeOptSwap(OptPath, self.cities, N=self.SWAP_COUNT)
+        xpath, ypath = getPathCoords(threeOptPath, self.cities)
+        if self.VISUALIZE: visualizePath(f"3 Opt Swap - {str(minTour)[:8]} km", self.cities, xpath, ypath)
+        print(f"Path followed -> {threeOptPath}\nTour Length -> {minTour}")
+        return threeOptPath
 
 
+    def bruteForceTSP(self):
+        if not self.BRUTE_FORCE: return None
 
-    print()    
-
-
-
-
-if BRUTE_FORCE:
-    print(f" ---- BRUTE FORCE ---- ")
-    start_time = time.perf_counter()
-    minTour, bestPath = bruteForce(cities)
-    print(f"time taken for {CITY_COUNT} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
-    xpath, ypath = getPathCoords(bestPath, cities)
-    if visualize: visualizePath(f"Brute Force - {str(minTour)[:8]} km", cities, xpath, ypath)
-    print(f"Path chosen -> {bestPath}")
-    print(f"Tour Length -> {minTour}")
+        print(f"\n ---- BRUTE FORCE ---- ")
+        minTour, brutePath = bruteForce(self.cities)
+        xpath, ypath = getPathCoords(brutePath, self.cities)
+        if self.VISUALIZE: visualizePath(f"Brute Force - {str(minTour)[:8]} km", self.cities, xpath, ypath)
+        print(f"Path followed -> {bruteForce}\nTour Length -> {minTour}")
+        return brutePath
 
 
-    print()
-
-
-# print(f" ---- BRUTE FORCE (WORST) ---- ")
-# start_time = time.perf_counter()
-# minTour, bestPath = bruteForceWorst(cities)
-# print(f"time taken for {CITY_COUNT} cities -> {str(time.perf_counter() - start_time)[:7]} seconds.")
-# xpath, ypath = getPathCoords(bestPath, cities)
-# if visualize: visualizePath(f"Brute Force (WORST) - {str(minTour)[:8]} km", cities, xpath, ypath)
-# print(f"Path chosen -> {bestPath}")
-# print(f"Tour Length -> {minTour}")
-
-
-# print()
-
-
-
-
-if visualize: input("Press any key to close : ")
+if __name__ == "__main__":
+    TSP()
