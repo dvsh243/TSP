@@ -5,8 +5,8 @@ from BruteForce.brute_force import bruteForce
 from BruteForce.brute_force_worst import bruteForceWorst
 from NearestNeighbour.nearest_neighbour import nearestNeighbour
 from Random.random_route import getRandomPath
-from Swapping.two_opt import twoOptSwap
-from Swapping.three_opt import threeOptSwap
+from LocalSearch.two_opt import twoOptSwap
+from LocalSearch.three_opt import threeOptSwap
 
 
 
@@ -15,14 +15,14 @@ class TSP:
     def __init__(self):
 
         self.VISUALIZE = True
-        self.CITY_COUNT = 25  # (for 3 opt swap) 3 > N < 9 (for brute force)
+        self.CITY_COUNT = 9  # (for 3 opt swap) 3 > N < 9 (for brute force)
 
         # - # - # - # - # - # - # - # - # - # - 
         self.BRUTE_FORCE = True
         self.RANDOM_PATH = True
         self.NEAREST_NEIGHBOUR = True
         
-        self.SWAP_COUNT = 20000
+        self.SWAP_COUNT = 100000
         self.TWO_OPT = True
         self.THREE_OPT = True
         # - # - # - # - # - # - # - # - # - # - 
@@ -33,7 +33,7 @@ class TSP:
         NNPath = self.nearestNeighbourTSP()
         # brutePath = self.bruteForceTSP()
         twoOptPath = self.twoOptTSP(NNPath)
-        threeOptSwap = self.threeOptTSP(twoOptPath)
+        threeOptSwap = self.threeOptTSP(NNPath)
 
         if self.VISUALIZE: input("Enter any key to exit: ")
 
@@ -91,7 +91,7 @@ class TSP:
         minTour, brutePath = bruteForce(self.cities)
         xpath, ypath = getPathCoords(brutePath, self.cities)
         if self.VISUALIZE: visualizePath(f"Brute Force - {str(minTour)[:8]} km", self.cities, xpath, ypath)
-        print(f"Path followed -> {bruteForce}\nTour Length -> {minTour}")
+        print(f"Path followed -> {brutePath}\nTour Length -> {minTour}")
         return brutePath
 
 
