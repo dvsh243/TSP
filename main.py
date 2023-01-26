@@ -8,6 +8,7 @@ from Random.random_route import getRandomPath
 from LocalSearch.two_opt import twoOptSwap
 from LocalSearch.three_opt import threeOptSwap
 from SimulatedAnnealing.anneal import SimAnneal
+from AntColony.ant_colony import AntColony
 
 
 
@@ -25,9 +26,9 @@ class TSP:
         # - # - # - # - # - # - # - # - # - # - 
 
         # randomPath = self.randomPathTSP()
-        NNPath = self.nearestNeighbourTSP()
+        # NNPath = self.nearestNeighbourTSP()
         # brutePath = self.bruteForceTSP()
-        twoOptPath = self.twoOptTSP(NNPath, visual=False)
+        # twoOptPath = self.twoOptTSP(NNPath, visual=False)
         # threeOptPath = self.threeOptTSP(twoOptPath, visual=False)
         # simAnnealPath = self.SimulatedAnnealingTSP(NNPath, visual=False)
         antColonyPath = self.AntColonyTSP()
@@ -101,7 +102,7 @@ class TSP:
     def AntColonyTSP(self):
 
         print("\n ---- ANT COLONY OPTIMIZATION ---- ")
-
+        antObject = AntColony(self.cities)
 
 
 if __name__ == "__main__":
