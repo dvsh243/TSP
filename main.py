@@ -15,7 +15,7 @@ class TSP:
 
     def __init__(self):
 
-        self.VISUALIZE = True
+        self.VISUALIZE = False
         self.CITY_COUNT = 11  # (for 3 opt swap) 3 > N < 9 (for brute force)
 
         # - # - # - # - # - # - # - # - # - # - 
@@ -24,7 +24,7 @@ class TSP:
         self.NEAREST_NEIGHBOUR = True
         self.SIMULATED_ANNEALING = True
         
-        self.SWAP_COUNT = 200
+        self.SWAP_COUNT = 350
         self.TWO_OPT = True
         self.THREE_OPT = True
         # - # - # - # - # - # - # - # - # - # - 

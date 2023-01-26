@@ -1,8 +1,9 @@
 import random
-from utils import getPathLength
+from utils import getPathLength, getPathCoords
+import matplotlib.pyplot as plt
 
 
-def threeOptSwap(path, cities, N=100):
+def threeOptSwap(path, cities, N=100, visual = False):
     """
     we can't modify 1st and last cities of path
     (path will start at city 0 and end at city 0)
@@ -12,8 +13,22 @@ def threeOptSwap(path, cities, N=100):
     swapCount = 0
     minTour = getPathLength(path, cities)
 
+    if visual: 
+        xpath, ypath = getPathCoords(path, cities)
+
+
     for i in range(N):
-        if i % 100 == 0: print(f"{str((i / N) * 100)[:10]}% swaps done.", end='\r')
+        if visual:
+            plt.scatter(xpath, ypath)
+            plt.suptitle(f" 3 Opt ({i} swap) - {minTour} km")
+            for i in range(len(cities)): plt.annotate(i, (xpath[i], ypath[i]))
+            xpath, ypath = getPathCoords(path, cities)
+            plt.plot(xpath, ypath)
+            plt.pause(0.01)
+            plt.clf()
+        else:
+            if i % 100 == 0: print(f"{str((i / N) * 100)[:10]}% swaps done.", end='\r')
+
         newPath = swapCities(path, cities)
         # print(f"new path length -> {getPathLength(newPath, cities)}")
 

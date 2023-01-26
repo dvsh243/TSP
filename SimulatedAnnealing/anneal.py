@@ -32,14 +32,14 @@ class SimAnneal:
             # if visual and i % 50 == 0:
             if visual:
                 plt.scatter(xpath, ypath)
-                for i in range(len(self.cities)): plt.annotate(i, (xpath[i], ypath[i]))
+                plt.suptitle(f" SimAnneal - {getPathLength(self.path, self.cities)} km")
+                for j in range(len(self.cities)): plt.annotate(j, (xpath[j], ypath[j]))
                 xpath, ypath = getPathCoords(self.path, self.cities)
                 plt.plot(xpath, ypath)
                 plt.pause(0.01)
                 plt.clf()
-                print(f"acceptance probability -> {str((self.temperature / self.max_temperature) * 100)[:8]}%\t temp - {self.temperature}", end='\r')
-            else: 
-                print(f"{i} acceptance probability -> {str((self.temperature / self.max_temperature) * 100)[:8]}%\t temp - {self.temperature}", end='\r')
+            
+            print(f"{i} acceptance probability -> {str((self.temperature / self.max_temperature) * 100)[:8]}%\t temp - {self.temperature}", end='\r')
 
             i += 1
             self.temperature = self.temperature * self.decay
