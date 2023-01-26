@@ -21,14 +21,14 @@ def twoOptSwap(path, cities, N=100, visual = True):
     for i in range(N):
         if visual:
             plt.scatter(xpath, ypath)
-            plt.suptitle(f" 2 Opt ({i} swap) - {minTour} km")
+            plt.suptitle(f" 2 Opt ({i}) - {minTour} km")
             for i in range(len(cities)): plt.annotate(i, (xpath[i], ypath[i]))
             xpath, ypath = getPathCoords(path, cities)
             plt.plot(xpath, ypath)
             plt.pause(0.01)
             plt.clf()
-        else:
-            if i % 100 == 0: print(f"{str((i / N) * 100)[:10]}% swaps done.", end='\r')
+
+        print(f"{str((i / N) * 100)[:10]}% swaps done.", end='\r')
 
         newPath = swapCities(path, cities)
         # print(f"new path length -> {getPathLength(newPath, cities)}")

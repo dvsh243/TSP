@@ -16,7 +16,7 @@ class TSP:
     def __init__(self):
 
         self.VISUALIZE = False
-        self.CITY_COUNT = 11  # (for 3 opt swap) 3 > N < 9 (for brute force)
+        self.CITY_COUNT = 12  # (for 3 opt swap) 3 > N < 9 (for brute force)
 
         # - # - # - # - # - # - # - # - # - # - 
         self.BRUTE_FORCE = True
@@ -24,19 +24,19 @@ class TSP:
         self.NEAREST_NEIGHBOUR = True
         self.SIMULATED_ANNEALING = True
         
-        self.SWAP_COUNT = 350
+        self.SWAP_COUNT = 200
         self.TWO_OPT = True
         self.THREE_OPT = True
         # - # - # - # - # - # - # - # - # - # - 
 
         self.cities = generateCities(self.CITY_COUNT)
 
-        randomPath = self.randomPathTSP()
-        # NNPath = self.nearestNeighbourTSP()
+        # randomPath = self.randomPathTSP()
+        NNPath = self.nearestNeighbourTSP()
         # brutePath = self.bruteForceTSP()
-        twoOptPath = self.twoOptTSP(randomPath)
+        twoOptPath = self.twoOptTSP(NNPath)
         # threeOptPath = self.threeOptTSP(randomPath)
-        simAnnealPath = self.SimulatedAnnealingTSP(randomPath)
+        simAnnealPath = self.SimulatedAnnealingTSP(NNPath)
 
         if self.VISUALIZE: input("Enter any key to exit: ")
 
@@ -102,7 +102,7 @@ class TSP:
         if not self.SIMULATED_ANNEALING: return None
 
         print("\n ---- SIMULATED ANNEALING ---- ")
-        annealObj = SimAnneal(self.cities, optPath, decay=0.98)
+        annealObj = SimAnneal(self.cities, optPath, decay=0.99)
         minPath = getPathLength(annealObj.path, self.cities)
         xpath, ypath = getPathCoords(annealObj.path, self.cities)
         if self.VISUALIZE: visualizePath(f"Simulated Annealing - {str(minPath)[:8]} km", self.cities, xpath, ypath)
