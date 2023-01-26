@@ -1,6 +1,8 @@
+from utils import getPathCoords
+import matplotlib.pyplot as plt
 
 
-def bruteForce(cities):
+def bruteForce(cities, visual = False):
     """
     computing permutations of all possible paths
     permutation [0, 3, 1, 2] means (0) -> (3) -> (1) -> (2) -> (0) 
@@ -13,8 +15,20 @@ def bruteForce(cities):
     minTour, bestPath = float('inf'), None
     # minTour, bestPath = 0, None  # uncomment and change sign (tourLength > minTour) for worst path
     
+    xpath, ypath = getPathCoords(permutations[0] + [0], cities)
+    
     progress = 0
     for path in permutations:
+
+        if visual:
+            plt.scatter(xpath, ypath)
+            plt.suptitle(f" Brute Force ({progress}) - {minTour} km")
+            for i in range(len(cities)): plt.annotate(i, (xpath[i], ypath[i]))
+            xpath, ypath = getPathCoords(path + [0], cities)
+            plt.plot(xpath, ypath)
+            plt.pause(0.01)
+            plt.clf()
+
         progress += 1
         tourLength = 0
 

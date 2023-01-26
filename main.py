@@ -16,7 +16,7 @@ class TSP:
     def __init__(self):
 
         self.VISUALIZE = False
-        self.CITY_COUNT = 12  # (for 3 opt swap) 3 > N < 9 (for brute force)
+        self.CITY_COUNT = 14  # (for 3 opt swap) 3 > N < 9 (for brute force)
 
         # - # - # - # - # - # - # - # - # - # - 
         self.BRUTE_FORCE = True
