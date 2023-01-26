@@ -31,12 +31,12 @@ class TSP:
 
         self.cities = generateCities(self.CITY_COUNT)
 
-        # randomPath = self.randomPathTSP()
-        NNPath = self.nearestNeighbourTSP()
+        randomPath = self.randomPathTSP()
+        # NNPath = self.nearestNeighbourTSP()
         # brutePath = self.bruteForceTSP()
-        twoOptPath = self.twoOptTSP(NNPath, visual=False)
+        twoOptPath = self.twoOptTSP(randomPath, visual=False)
         # threeOptPath = self.threeOptTSP(twoOptPath, visual=False)
-        simAnnealPath = self.SimulatedAnnealingTSP(NNPath, visual=False)
+        simAnnealPath = self.SimulatedAnnealingTSP(randomPath, visual=False)
 
         if self.VISUALIZE: input("Enter any key to exit: ")
 

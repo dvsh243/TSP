@@ -27,8 +27,7 @@ class SimAnneal:
         i = 0
         while self.temperature > self.stopping_temperature:
             
-            # print(f"{i} acceptance probability -> {str((self.temperature / self.max_temperature) * 100)[:8]}%\t temp - {self.temperature}", end='\r')
-            if i%100 == 0: print(f"good = {good}\tbad = {bad}\tminTour = {minTour}\ttemp = {self.temperature}", end='\r')
+            if i%100 == 0: print(f"minTour = {minTour}\ttemp = {self.temperature}", end='\r')
 
             i += 1
             self.temperature = self.temperature * self.decay
