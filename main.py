@@ -15,25 +15,25 @@ class TSP:
     def __init__(self):
 
         self.VISUALIZE = True
-        self.CITY_COUNT = 9  # (for 3 opt swap) 3 > N < 9 (for brute force)
+        self.CITY_COUNT = 25  # (for 3 opt swap) 3 > N < 9 (for brute force)
 
         # - # - # - # - # - # - # - # - # - # - 
         self.BRUTE_FORCE = True
         self.RANDOM_PATH = True
         self.NEAREST_NEIGHBOUR = True
         
-        self.TWO_OPT = True
         self.SWAP_COUNT = 20000
+        self.TWO_OPT = True
         self.THREE_OPT = True
         # - # - # - # - # - # - # - # - # - # - 
 
         self.cities = generateCities(self.CITY_COUNT)
 
-        randomPath = self.randomPathTSP()
+        # randomPath = self.randomPathTSP()
         NNPath = self.nearestNeighbourTSP()
-        brutePath = self.bruteForceTSP()
+        # brutePath = self.bruteForceTSP()
         twoOptPath = self.twoOptTSP(NNPath)
-        threeOptSwap = self.threeOptTSP(NNPath)
+        threeOptSwap = self.threeOptTSP(twoOptPath)
 
         if self.VISUALIZE: input("Enter any key to exit: ")
 
@@ -95,5 +95,8 @@ class TSP:
         return brutePath
 
 
+
+
 if __name__ == "__main__":
     TSP()
+    print()
