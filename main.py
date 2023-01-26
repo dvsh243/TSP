@@ -15,7 +15,7 @@ class TSP:
 
     def __init__(self):
 
-        self.VISUALIZE = False
+        self.VISUALIZE = True
         self.CITY_COUNT = 20  # (for 3 opt swap) 3 > N < 9 (for brute force)
 
         # - # - # - # - # - # - # - # - # - # - 
@@ -24,19 +24,19 @@ class TSP:
         self.NEAREST_NEIGHBOUR = True
         self.SIMULATED_ANNEALING = True
         
-        self.SWAP_COUNT = 100000
+        self.SWAP_COUNT = 80000
         self.TWO_OPT = True
         self.THREE_OPT = True
         # - # - # - # - # - # - # - # - # - # - 
 
         self.cities = generateCities(self.CITY_COUNT)
 
-        # randomPath = self.randomPathTSP()
-        NNPath = self.nearestNeighbourTSP()
+        randomPath = self.randomPathTSP()
+        # NNPath = self.nearestNeighbourTSP()
         # brutePath = self.bruteForceTSP()
-        twoOptPath = self.twoOptTSP(NNPath, visual=False)
+        twoOptPath = self.twoOptTSP(randomPath, visual=False)
         # threeOptPath = self.threeOptTSP(twoOptPath, visual=False)
-        simAnnealPath = self.SimulatedAnnealingTSP(NNPath, visual=False)
+        simAnnealPath = self.SimulatedAnnealingTSP(randomPath, visual=False)
 
         if self.VISUALIZE: input("Enter any key to exit: ")
 
@@ -102,12 +102,12 @@ class TSP:
         if not self.SIMULATED_ANNEALING: return None
 
         print("\n ---- SIMULATED ANNEALING ---- ")
-        annealObj = SimAnneal(self.cities, optPath, decay=0.99995, visual=visual)
-        minPath = getPathLength(annealObj.path, self.cities)
-        xpath, ypath = getPathCoords(annealObj.path, self.cities)
+        annealObj = SimAnneal(self.cities, optPath, decay=0.99996, visual=visual)
+        minPath = getPathLength(annealObj.minPath, self.cities)
+        xpath, ypath = getPathCoords(annealObj.minPath, self.cities)
         if self.VISUALIZE: visualizePath(f"Simulated Annealing - {str(minPath)[:8]} km", self.cities, xpath, ypath)
-        print(f"Path followed -> {annealObj.path}\nTour Length -> {minPath}")
-        return annealObj.path
+        print(f"Path followed -> {annealObj.minPath}\nTour Length -> {minPath}")
+        return annealObj.minPath
 
 
 

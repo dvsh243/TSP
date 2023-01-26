@@ -13,6 +13,7 @@ class SimAnneal:
         self.decay = decay
 
         self.path = optPath
+        self.minPath = None
 
         self.anneal(visual = visual)
     
@@ -22,6 +23,7 @@ class SimAnneal:
         good, bad = 0, 0
 
         minTour = float('inf')
+        
         i = 0
         while self.temperature > self.stopping_temperature:
             
@@ -38,7 +40,10 @@ class SimAnneal:
                 good += 1
                 # if this newPath is better than the previous path we had we accept
                 self.path = newPath
-                minTour = min( getPathLength(self.path, self.cities), minTour )
+
+                if minTour > getPathLength(self.path, self.cities):
+                    minTour = getPathLength(self.path, self.cities)
+                    self.minPath = self.path
 
 
             elif self.acceptProbability():

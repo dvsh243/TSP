@@ -20,7 +20,7 @@ def twoOptSwap(path, cities, N=100, visual = False):
 
     for i in range(N):
 
-        print(f"{str((i / N) * 100)[:10]}% swaps done.", end='\r')
+        if i%100 == 0: print(f"{str((i / N) * 100)[:10]}% swaps done.", end='\r')
 
         newPath = swapCities(path, cities)
         # print(f"new path length -> {getPathLength(newPath, cities)}")
