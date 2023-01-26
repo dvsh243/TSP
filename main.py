@@ -15,21 +15,12 @@ class TSP:
 
     def __init__(self):
 
+        # - # - # - # - # - # - # - # - # - # - 
         self.VISUALIZE = True
         self.CITY_COUNT = 20  # (for 3 opt swap) 3 > N < 9 (for brute force)
-
-        # - # - # - # - # - # - # - # - # - # - 
-        self.BRUTE_FORCE = True
-        self.RANDOM_PATH = True
-        self.NEAREST_NEIGHBOUR = True
-        self.SIMULATED_ANNEALING = True
-        
         self.SWAP_COUNT = 80000
-        self.TWO_OPT = True
-        self.THREE_OPT = True
-        # - # - # - # - # - # - # - # - # - # - 
-
         self.cities = generateCities(self.CITY_COUNT)
+        # - # - # - # - # - # - # - # - # - # - 
 
         randomPath = self.randomPathTSP()
         # NNPath = self.nearestNeighbourTSP()
@@ -42,7 +33,6 @@ class TSP:
 
 
     def randomPathTSP(self):
-        if not self.RANDOM_PATH: return None
 
         print(f"\n ---- RANDOM PATH ---- ")
         randomPath = getRandomPath(self.cities)
@@ -54,7 +44,6 @@ class TSP:
     
 
     def nearestNeighbourTSP(self):
-        if not self.NEAREST_NEIGHBOUR: return None
     
         print(f"\n ---- NEAREST NEIGHBOUR ---- ")
         NNPath = nearestNeighbour(self.cities)
@@ -66,7 +55,6 @@ class TSP:
     
 
     def twoOptTSP(self, OptPath: list, visual: bool = False):
-        if not self.TWO_OPT: return None
     
         print(f"\n ---- 2 OPT SWAP ---- ")
         minTour, twoOptPath = twoOptSwap(OptPath, self.cities, N=self.SWAP_COUNT, visual=visual)
@@ -77,8 +65,7 @@ class TSP:
 
     
     def threeOptTSP(self, OptPath: list, visual: bool = False):
-        if not self.TWO_OPT: return None
-        
+
         print(f"\n ---- 3 OPT SWAP ---- ")
         minTour, threeOptPath = threeOptSwap(OptPath, self.cities, N=self.SWAP_COUNT, visual=visual)
         xpath, ypath = getPathCoords(threeOptPath, self.cities)
@@ -88,8 +75,7 @@ class TSP:
 
 
     def bruteForceTSP(self):
-        if not self.BRUTE_FORCE: return None
-
+        
         print(f"\n ---- BRUTE FORCE ---- ")
         minTour, brutePath = bruteForce(self.cities)
         xpath, ypath = getPathCoords(brutePath, self.cities)
@@ -99,8 +85,7 @@ class TSP:
 
 
     def SimulatedAnnealingTSP(self, optPath, visual = False):
-        if not self.SIMULATED_ANNEALING: return None
-
+        
         print("\n ---- SIMULATED ANNEALING ---- ")
         annealObj = SimAnneal(self.cities, optPath, decay=0.99996, visual=visual)
         minPath = getPathLength(annealObj.minPath, self.cities)
@@ -109,6 +94,10 @@ class TSP:
         print(f"Path followed -> {annealObj.minPath}\nTour Length -> {minPath}")
         return annealObj.minPath
 
+
+    def AntColonyTSP(self):
+
+        print("\n ---- ANT COLONY OPTIMIZATION ---- ")
 
 
 
