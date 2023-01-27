@@ -18,20 +18,20 @@ class TSP:
 
         # - # - # - # - # - # - # - # - # - # - 
 
-        self.VISUALIZE = False
+        self.VISUALIZE = True
         self.CITY_COUNT = 20  # (for 3 opt swap) 3 > N < 9 (for brute force)
         self.SWAP_COUNT = 80000
         self.cities = generateCities(self.CITY_COUNT)
 
         # - # - # - # - # - # - # - # - # - # - 
 
-        # randomPath = self.randomPathTSP()
+        randomPath = self.randomPathTSP()
         # NNPath = self.nearestNeighbourTSP()
         # brutePath = self.bruteForceTSP()
-        # twoOptPath = self.twoOptTSP(NNPath, visual=False)
+        twoOptPath = self.twoOptTSP(randomPath, visual=False)
         # threeOptPath = self.threeOptTSP(twoOptPath, visual=False)
-        # simAnnealPath = self.SimulatedAnnealingTSP(NNPath, visual=False)
-        antColonyPath = self.AntColonyTSP()
+        simAnnealPath = self.SimulatedAnnealingTSP(randomPath, visual=False)
+        # antColonyPath = self.AntColonyTSP()
 
         if self.VISUALIZE: input("Enter any key to exit: ")
 
