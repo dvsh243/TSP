@@ -1,4 +1,6 @@
-from utils import getPathLength
+import time
+from utils import getPathLength, getPathCoords
+import matplotlib.pyplot as plt
 import collections
 import random
 
@@ -7,17 +9,22 @@ class AntColony:
     def __init__(self, cities):
 
         self.cities = cities
+        self.feromonePresence = 10
         print("ant colony init.")
         self.probabilityMap = self.cityDistanceProb()
-        self.feromoneMatrix = [[0 for j in range(len(self.cities))] for i in range(len(self.cities))]
+        self.feromoneMatrix = [[10 for j in range(len(self.cities))] for i in range(len(self.cities))]
 
-        self.visited = set(); self.visited.add(0)
-        tour = self.createTour()
-        print("tour ->", tour, getPathLength(tour, self.cities))
+
+        for i in range(10000):
+            self.visited = set(); self.visited.add(0)
+            tour = self.createTour()
+            self.updateFeromoneMatrix(tour, getPathLength(tour, self.cities))
+
+            # print(f"{i} tour ->", tour, getPathLength(tour, self.cities))
+            
 
         print()
-        self.updateFeromoneMatrix(tour, getPathLength(tour, self.cities))
-
+        
 
 
     def cityDistanceProb(self):
@@ -52,29 +59,41 @@ class AntColony:
         return distMap
 
     
-    def getNextCity(self, city):
+    def getNextCity(self, cityIdx):
         """getting the next city from the probability map"""
+        
+        city = self.cities[cityIdx]
+        
+        weightList = [i[1] for i in self.probabilityMap[city]]
+
+        # multiplying current weights with feromone matrix
+        for i in range(len(weightList)):
+            weightList[i] = weightList[i] * self.feromoneMatrix[cityIdx][i]
+
+        # print(f"weight list for {(city.x, city.y)} -> ")
+        # print(weightList)
 
         # while next city not in visited already
-        choice = 0
-        
+        choice = 0  # 0 is always in visited by default
         while choice in self.visited:
+
             choice = random.choices(
                     population = self.probabilityMap[city],
-                    weights = [i[1] for i in self.probabilityMap[city]]
+                    weights = weightList
                 )[0][0]
+
         return choice
     
 
     def createTour(self):
         tour = [0]
-        curCity = self.cities[0]
+        curCity = 0
 
         while len(tour) < len(self.cities):
-            nextCity = self.getNextCity(curCity)
+            nextCity = self.getNextCity( curCity )
             tour.append(nextCity)
 
-            curCity = self.cities[nextCity]
+            curCity = nextCity
 
             self.visited.add(nextCity)
         
@@ -83,15 +102,25 @@ class AntColony:
     
 
     def updateFeromoneMatrix(self, tour, tourLength):
+        # also called reward matrix
 
         for j in range(1, len(tour) - 1):  # not taking the last edge because its just connecting back to 0
             i = j - 1
             c1, c2 = tour[i], tour[j]
 
-            self.feromoneMatrix[c1][c2] += (1 / tourLength)
-            self.feromoneMatrix[c2][c1] += (1 / tourLength)
+            # inverse of tour length -> better tour length, higher the inverse, higher the probability of this edge being selected 
+            self.feromoneMatrix[c1][c2] += (self.feromonePresence / tourLength)
+            self.feromoneMatrix[c2][c1] += (self.feromonePresence / tourLength)
 
-        for r in range(len(self.feromoneMatrix)):
-            for c in range(len(self.feromoneMatrix)):
-                print(self.feromoneMatrix[r][c], end=' - ')
-            print()
+        # for r in range(len(self.feromoneMatrix)):
+        #     for c in range(len(self.feromoneMatrix)):
+        #         print(self.feromoneMatrix[r][c], end=' - ')
+        #     print()
+
+    def showVisual(self, path):
+        xpath, ypath = getPathCoords(path, self.cities)
+        plt.scatter(xpath, ypath)
+        plt.suptitle(f" Ant Colony - {getPathLength(path, self.cities)} km")
+        plt.plot(xpath, ypath)
+        plt.pause(0.01)
+        plt.clf()
