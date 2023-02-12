@@ -9,7 +9,12 @@ class AntColony:
         print("ant colony init.")
         self.probabilityMap = self.cityDistanceProb()
 
-        # self.getNextCity(self.cities[0])
+        self.visited = set(); self.visited.add(-1)
+        tour = self.createTour()
+
+        
+
+
 
 
     def cityDistanceProb(self):
@@ -41,20 +46,36 @@ class AntColony:
             for dist in distMap[city]:
                 dist[1] = (dist[1] / distSum)
             
-            # choosing a random city from a weighted population
-            # choice = random.choices(
-            #     population = distMap[city],
-            #     weights = [i[1] for i in distMap[city]]
-            # )
-            # print("city chosen ->", choice)
-            
         return distMap
 
     
     def getNextCity(self, city):
         """getting the next city from the probability map"""
-        choice = random.choices(
-                population = self.probabilityMap[city],
-                weights = [i[1] for i in self.probabilityMap[city]]
-            )
-        return choice[0]
+
+        # while next city not in visited already
+        choice = -1
+        
+        while choice in self.visited:
+            choice = random.choices(
+                    population = self.probabilityMap[city],
+                    weights = [i[1] for i in self.probabilityMap[city]]
+                )[0][0]
+        return choice
+    
+
+    def createTour(self):
+        tour = [0]
+        curCity = self.cities[0]
+
+        while len(tour) <= len(self.cities):
+            nextCity = self.getNextCity(curCity)
+            tour.append(nextCity)
+
+            curCity = self.cities[nextCity]
+            # print("tour ->", tour)
+
+            self.visited.add(nextCity)
+        
+        tour.append(0)
+        print("tour ->", tour)
+        return tour
