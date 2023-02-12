@@ -1,3 +1,4 @@
+from utils import getPathLength
 import collections
 import random
 
@@ -11,9 +12,8 @@ class AntColony:
 
         self.visited = set(); self.visited.add(-1)
         tour = self.createTour()
-
+        print("tour ->", tour, getPathLength(tour, self.cities))
         
-
 
 
 
@@ -76,6 +76,5 @@ class AntColony:
 
             self.visited.add(nextCity)
         
-        tour.append(0)
-        print("tour ->", tour)
+        tour.append(0)  # connect back to 0
         return tour

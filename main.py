@@ -19,7 +19,7 @@ class TSP:
         # - # - # - # - # - # - # - # - # - # - 
 
         self.VISUALIZE = False
-        self.CITY_COUNT = 20  # (for 3 opt swap) 3 > N < 9 (for brute force)
+        self.CITY_COUNT = 10  # (for 3 opt swap) 3 > N < 9 (for brute force)
         self.SWAP_COUNT = 80000
         self.cities = generateCities(self.CITY_COUNT)
 
