@@ -9,19 +9,24 @@ class AntColony:
     def __init__(self, cities):
 
         self.cities = cities
-        self.feromonePresence = 10
+        self.feromonePresence = 100
         print("ant colony init.")
         self.probabilityMap = self.cityDistanceProb()
         self.feromoneMatrix = [[10 for j in range(len(self.cities))] for i in range(len(self.cities))]
 
+        # self.showFeromones()
 
+        minTour = float('inf')
         for i in range(10000):
             self.visited = set(); self.visited.add(0)
             tour = self.createTour()
             self.updateFeromoneMatrix(tour, getPathLength(tour, self.cities))
 
             # print(f"{i} tour ->", tour, getPathLength(tour, self.cities))
-            
+            minTour = min(minTour, getPathLength(tour, self.cities))
+        
+        print(minTour)
+        # self.showFeromones()
 
         print()
         
@@ -68,7 +73,8 @@ class AntColony:
 
         # multiplying current weights with feromone matrix
         for i in range(len(weightList)):
-            weightList[i] = weightList[i] * self.feromoneMatrix[cityIdx][i]
+            # weightList[i] = weightList[i] * self.feromoneMatrix[cityIdx][i]
+            weightList[i] = 1 * self.feromoneMatrix[cityIdx][i]
 
         # print(f"weight list for {(city.x, city.y)} -> ")
         # print(weightList)
@@ -116,6 +122,12 @@ class AntColony:
         #     for c in range(len(self.feromoneMatrix)):
         #         print(self.feromoneMatrix[r][c], end=' - ')
         #     print()
+
+    def showFeromones(self):
+        for r in range(len(self.feromoneMatrix)):
+            for c in range(len(self.feromoneMatrix)):
+                print(self.feromoneMatrix[r][c], end=' - ')
+            print()
 
     def showVisual(self, path):
         xpath, ypath = getPathCoords(path, self.cities)
