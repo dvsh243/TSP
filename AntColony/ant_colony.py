@@ -9,11 +9,14 @@ class AntColony:
         self.cities = cities
         print("ant colony init.")
         self.probabilityMap = self.cityDistanceProb()
+        self.feromoneMatrix = [[0 for j in range(len(self.cities))] for i in range(len(self.cities))]
 
-        self.visited = set(); self.visited.add(-1)
+        self.visited = set(); self.visited.add(0)
         tour = self.createTour()
         print("tour ->", tour, getPathLength(tour, self.cities))
-        
+
+        print()
+        self.updateFeromoneMatrix(tour, getPathLength(tour, self.cities))
 
 
 
@@ -53,7 +56,7 @@ class AntColony:
         """getting the next city from the probability map"""
 
         # while next city not in visited already
-        choice = -1
+        choice = 0
         
         while choice in self.visited:
             choice = random.choices(
@@ -67,14 +70,28 @@ class AntColony:
         tour = [0]
         curCity = self.cities[0]
 
-        while len(tour) <= len(self.cities):
+        while len(tour) < len(self.cities):
             nextCity = self.getNextCity(curCity)
             tour.append(nextCity)
 
             curCity = self.cities[nextCity]
-            # print("tour ->", tour)
 
             self.visited.add(nextCity)
         
         tour.append(0)  # connect back to 0
         return tour
+    
+
+    def updateFeromoneMatrix(self, tour, tourLength):
+
+        for j in range(1, len(tour) - 1):  # not taking the last edge because its just connecting back to 0
+            i = j - 1
+            c1, c2 = tour[i], tour[j]
+
+            self.feromoneMatrix[c1][c2] += (1 / tourLength)
+            self.feromoneMatrix[c2][c1] += (1 / tourLength)
+
+        for r in range(len(self.feromoneMatrix)):
+            for c in range(len(self.feromoneMatrix)):
+                print(self.feromoneMatrix[r][c], end=' - ')
+            print()
