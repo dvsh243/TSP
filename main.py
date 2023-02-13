@@ -25,12 +25,12 @@ class TSP:
 
         # - # - # - # - # - # - # - # - # - # - 
 
-        randomPath = self.randomPathTSP()
+        # randomPath = self.randomPathTSP()
         # NNPath = self.nearestNeighbourTSP()
         # brutePath = self.bruteForceTSP()
         # twoOptPath = self.twoOptTSP(randomPath, visual=False)
         # threeOptPath = self.threeOptTSP(twoOptPath, visual=False)
-        simAnnealPath = self.SimulatedAnnealingTSP(randomPath, visual=False)
+        # simAnnealPath = self.SimulatedAnnealingTSP(randomPath, visual=False)
         antColonyPath = self.AntColonyTSP()
 
         if self.VISUALIZE: input("Enter any key to exit: ")
@@ -103,11 +103,11 @@ class TSP:
 
         print("\n ---- ANT COLONY OPTIMIZATION ---- ")
         antObject = AntColony(self.cities)
-        minPath = getPathLength(antObject.tour, self.cities)
-        xpath, ypath = getPathCoords(antObject.tour, self.cities)
-        if self.VISUALIZE: visualizePath(f"Ant Colony - {str(minPath)[:8]} km", self.cities, xpath, ypath)
-        print(f"Path followed -> {antObject.tour}\nTour Length -> {minPath}")
-        return antObject.tour
+        # minPath = getPathLength(antObject.tour, self.cities)
+        # xpath, ypath = getPathCoords(antObject.tour, self.cities)
+        # if self.VISUALIZE: visualizePath(f"Ant Colony - {str(minPath)[:8]} km", self.cities, xpath, ypath)
+        # print(f"Path followed -> {antObject.tour}\nTour Length -> {minPath}")
+        # return antObject.tour
 
 
 
