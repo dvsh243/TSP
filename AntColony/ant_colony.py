@@ -1,4 +1,4 @@
-import time
+import time, os
 from utils import getPathLength, getPathCoords
 import matplotlib.pyplot as plt
 import collections
@@ -9,26 +9,28 @@ class AntColony:
     def __init__(self, cities):
 
         self.cities = cities
-        self.feromonePresence = 100
+        self.feromonePresence = 5000   # 100
         print("ant colony init.")
         self.probabilityMap = self.cityDistanceProb()
-        self.feromoneMatrix = [[10 for j in range(len(self.cities))] for i in range(len(self.cities))]
+        self.feromoneMatrix = [[1000 for j in range(len(self.cities))] for i in range(len(self.cities))]
 
-        # self.showFeromones()
+        self.showFeromones()
 
-        minTour = float('inf')
-        for i in range(10000):
+        for i in range(200000):
             self.visited = set(); self.visited.add(0)
-            tour = self.createTour()
-            self.updateFeromoneMatrix(tour, getPathLength(tour, self.cities))
+            self.tour = self.createTour()
+            self.updateFeromoneMatrix(self.tour, getPathLength(self.tour, self.cities))
 
             # print(f"{i} tour ->", tour, getPathLength(tour, self.cities))
-            minTour = min(minTour, getPathLength(tour, self.cities))
-        
-        print(minTour)
-        # self.showFeromones()
 
-        print()
+            if i % 5000 == 0:
+                self.showFeromones(); print()
+                print(i)
+                # self.showVisual()
+
+        
+        self.showFeromones()
+
         
 
 
@@ -63,7 +65,7 @@ class AntColony:
             
         return distMap
 
-    
+
     def getNextCity(self, cityIdx):
         """getting the next city from the probability map"""
         
@@ -73,8 +75,7 @@ class AntColony:
 
         # multiplying current weights with feromone matrix
         for i in range(len(weightList)):
-            # weightList[i] = weightList[i] * self.feromoneMatrix[cityIdx][i]
-            weightList[i] = 1 * self.feromoneMatrix[cityIdx][i]
+            weightList[i] = weightList[i] * self.feromoneMatrix[cityIdx][i]
 
         # print(f"weight list for {(city.x, city.y)} -> ")
         # print(weightList)
@@ -124,15 +125,48 @@ class AntColony:
         #     print()
 
     def showFeromones(self):
+        os.system('cls')
         for r in range(len(self.feromoneMatrix)):
             for c in range(len(self.feromoneMatrix)):
                 print(self.feromoneMatrix[r][c], end=' - ')
             print()
 
-    def showVisual(self, path):
-        xpath, ypath = getPathCoords(path, self.cities)
+        
+    def getMaxFeromonePath(self):
+        nextCityMatrix = [[] for _ in range(len(self.cities))]
+
+        for r in range(len(self.feromoneMatrix)):
+            possibleNext = []
+            for c, fer in enumerate(self.feromoneMatrix[r]):
+                possibleNext.append( [fer, c] )
+            possibleNext.sort(key = lambda i: i[0], reverse = True)  # sorting by highest feromones firts
+            # print(f"City ({r}) --> {possibleNext}")
+
+            nextCityMatrix[r] = possibleNext
+
+        # print()        
+        # for r in range(len(nextCityMatrix)):
+        #     for c in range(len(nextCityMatrix[0])):
+        #         print(nextCityMatrix[r][c], end=' - ')
+        #     print()
+        
+        # # getting the first edge by getting highest feromone path between 2 cities
+        # visited = collections.defaultdict(int)  # all cities can get maximum 2 edges
+        # print()
+        # for c in range(len(nextCityMatrix[0])):
+        #     nextCity, maxFer = None, 0
+        #     for r in range(len(nextCityMatrix)):
+        #         if nextCityMatrix[c][r][0] > maxFer and visited[nextCityMatrix[c][r][1]] < 2:
+        #             maxFer = nextCityMatrix[c][r][0]
+        #             nextCity = nextCityMatrix[c][r][1]
+        #     print(f"({c}) -> ({nextCity})")
+        #     visited[nextCity] += 1
+        # print(visited)
+
+    def showVisual(self):
+        xpath, ypath = getPathCoords(self.tour, self.cities)
         plt.scatter(xpath, ypath)
-        plt.suptitle(f" Ant Colony - {getPathLength(path, self.cities)} km")
+        plt.suptitle(f" Ant Colony - {getPathLength(self.tour, self.cities)} km")
         plt.plot(xpath, ypath)
         plt.pause(0.01)
         plt.clf()

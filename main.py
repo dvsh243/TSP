@@ -18,7 +18,7 @@ class TSP:
 
         # - # - # - # - # - # - # - # - # - # - 
 
-        self.VISUALIZE = False
+        self.VISUALIZE = True
         self.CITY_COUNT = 10  # (for 3 opt swap) 3 > N < 9 (for brute force)
         self.SWAP_COUNT = 80000
         self.cities = generateCities(self.CITY_COUNT)
@@ -103,6 +103,12 @@ class TSP:
 
         print("\n ---- ANT COLONY OPTIMIZATION ---- ")
         antObject = AntColony(self.cities)
+        minPath = getPathLength(antObject.tour, self.cities)
+        xpath, ypath = getPathCoords(antObject.tour, self.cities)
+        if self.VISUALIZE: visualizePath(f"Ant Colony - {str(minPath)[:8]} km", self.cities, xpath, ypath)
+        print(f"Path followed -> {antObject.tour}\nTour Length -> {minPath}")
+        return antObject.tour
+
 
 
 if __name__ == "__main__":
