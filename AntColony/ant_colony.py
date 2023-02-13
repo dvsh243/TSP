@@ -9,27 +9,29 @@ class AntColony:
     def __init__(self, cities):
 
         self.cities = cities
-        self.feromonePresence = 5000   # 100
-        print("ant colony init.")
+        self.feromonePresence = 100   # 100
+        iterations = 150000
+
         self.probabilityMap = self.cityDistanceProb()
         self.feromoneMatrix = [[1000 for j in range(len(self.cities))] for i in range(len(self.cities))]
 
-        self.showFeromones()
+        # self.showFeromones()
 
-        for i in range(200000):
+        for i in range(iterations):
             self.visited = set(); self.visited.add(0)
             self.tour = self.createTour()
             self.updateFeromoneMatrix(self.tour, getPathLength(self.tour, self.cities))
 
             # print(f"{i} tour ->", tour, getPathLength(tour, self.cities))
 
-            if i % 5000 == 0:
-                self.showFeromones(); print()
-                print(i)
+            if i % 2000 == 0:
+                print(f"{(i / iterations) * 100} % done.", end='\r')
+                # self.showFeromones(); print()
+                # print(i)
                 # self.showVisual()
 
         
-        self.showFeromones()
+        # self.showFeromones()
 
         
 
